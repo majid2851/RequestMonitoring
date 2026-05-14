@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Traffic Monitor</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Live Traffic Monitor</h1>
+            <span class="live-indicator">
+                <span class="pulse"></span>
+                LIVE
+            </span>
+        </div>
+        <div class="header-stats">
+            <div class="stat-pill">
+                <span class="stat-label">RPS</span>
+                <span class="stat-value" id="rps">0</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">p95</span>
+                <span class="stat-value" id="p95">0ms</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Errors</span>
+                <span class="stat-value" id="errors">0</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-label">Total</span>
+                <span class="stat-value" id="total">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Live Traffic Chart -->
+        <div class="card card-large">
+            <div class="card-header">
+                <h2>Live Traffic</h2>
+                <span class="card-subtitle">Requests per second (last 5 minutes)</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Middle Row -->
+        <div class="row">
+            <!-- Status Codes Over Time -->
+            <div class="card card-medium">
+                <div class="card-header">
+                    <h2>Status Codes Over Time</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="statusTimeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Latency Chart -->
+            <div class="card card-medium">
+                <div class="card-header">
+                    <h2>Response Time</h2>
+                    <span class="card-subtitle">p50 / p95 / p99</span>
+                </div>
+                <div class="latency-display">
+                    <div class="latency-item">
+                        <span class="latency-label">p50</span>
+                        <span class="latency-value p50-value" id="p50-display">0ms</span>
+                    </div>
+                    <div class="latency-item">
+                        <span class="latency-label">p95</span>
+                        <span class="latency-value p95-value" id="p95-display">0ms</span>
+                    </div>
+                    <div class="latency-item">
+                        <span class="latency-label">p99</span>
+                        <span class="latency-value p99-value" id="p99-display">0ms</span>
+                    </div>
+                    <div class="latency-item">
+                        <span class="latency-label">avg</span>
+                        <span class="latency-value avg-value" id="avg-display">0ms</span>
+                    </div>
+                </div>
+                <div class="error-gauge">
+                    <div class="gauge-label">Error Rate</div>
+                    <div class="gauge-value" id="error-rate">0%</div>
+                    <div class="gauge-bar">
+                        <div class="gauge-fill" id="error-gauge-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="row">
+            <!-- Status Code Distribution -->
+            <div class="card card-small">
+                <div class="card-header">
+                    <h2>Status Codes</h2>
+                </div>
+                <div class="chart-container chart-small">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- HTTP Methods -->
+            <div class="card card-small">
+                <div class="card-header">
+                    <h2>HTTP Methods</h2>
+                </div>
+                <div class="chart-container chart-small">
+                    <canvas id="methodsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Endpoints -->
+            <div class="card card-small">
+                <div class="card-header">
+                    <h2>Top Endpoints</h2>
+                </div>
+                <div class="endpoints-list" id="topEndpoints">
+                    <div class="endpoint-placeholder">Waiting for data...</div>
+                </div>
+            </div>
+
+            <!-- Slowest Endpoints -->
+            <div class="card card-small">
+                <div class="card-header">
+                    <h2>Slowest Endpoints</h2>
+                </div>
+                <div class="endpoints-list" id="slowestEndpoints">
+                    <div class="endpoint-placeholder">Waiting for data...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Request Feed -->
+        <div class="card card-full">
+            <div class="card-header">
+                <h2>Live Request Feed</h2>
+                <span class="card-subtitle">Last 20 requests</span>
+            </div>
+            <div class="request-feed" id="requestFeed">
+                <div class="request-placeholder">Waiting for requests...</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/dashboard.js"></script>
+</body>
+</html>

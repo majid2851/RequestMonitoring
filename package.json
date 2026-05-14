@@ -1,0 +1,19 @@
+{
+  "name": "request-monitoring-graph",
+  "version": "1.0.0",
+  "description": "Real-time request monitoring dashboard with visual graphs",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "traffic": "node demo/traffic-generator.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14",
+    "socket.io": "^4.7.4"
+  }
+}
