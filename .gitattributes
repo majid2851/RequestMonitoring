@@ -1,0 +1,6 @@
+# Ensure text files use UTF-8 and LF line endings on GitHub
+*.md text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
